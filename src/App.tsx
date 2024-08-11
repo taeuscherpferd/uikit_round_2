@@ -1,4 +1,4 @@
-import { Box, OrbitControls } from '@react-three/drei'
+import { Box } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { Physics, RigidBody } from '@react-three/rapier'
 import { Container, Root } from '@react-three/uikit'
@@ -19,13 +19,13 @@ function App() {
         <button onClick={() => { store.enterVR() }}>{"Enter VR"}</button>
         <Canvas>
           <color attach="background" args={['lightblue']} />
-          <OrbitControls />
+          {/* THIS MESSES WITH THE CAMERA HARD CORE! */}
+          {/* <OrbitControls /> */}
           <Suspense fallback={null}>
             <XR store={store}>
               <Physics debug>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
-                {/* <Player /> */}
                 <LocomotionWrapper />
 
                 <group position={[0, 2, -4]}>
