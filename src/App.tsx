@@ -29,7 +29,7 @@ function App() {
                 <Player />
 
                 <group position={[0, 2, -4]}>
-                  <Root backgroundColor={"#9900ff"} sizeX={2} sizeY={1} flexDirection={'row'} >
+                  <Root backgroundColor={"#9900ff"} sizeX={2} sizeY={1} flexDirection={'row'}>
                     <Container onClick={() => setLeftSquareColor((p) => p === "green" ? "red" : "green")} flexGrow={1} margin={8} backgroundColor={leftSquareColor} />
                     <Container onClick={() => setRightSquareColor((p) => p === "blue" ? "orange" : "blue")} flexGrow={1} margin={8} backgroundColor={rightSquareColor} />
                   </Root>
