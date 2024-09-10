@@ -25,9 +25,17 @@ const thumbstickPropName = 'xr-standard-thumbstick';
 const cameraQuaternion = new Quaternion();
 
 export const useLocomotion = (options: LocomotionOptions) => {
-  const { handControllingMovement = defaultHandControllingMovement, speed = defaultSpeed, numberOfDegreesToSnapTurnBy = defaultNumberOfDegreesToSnapTurnBy,
-    viewControlDeadZone = defaultViewControlDeadZone, smoothTurningSpeed = defaultSmoothTurningSpeed, enableSmoothTurning = defaultEnableSmoothTurning,
-    disableSnapTurning, disableRefMovement, motionCallback } = options;
+  const {
+    handControllingMovement = defaultHandControllingMovement,
+    speed = defaultSpeed,
+    numberOfDegreesToSnapTurnBy = defaultNumberOfDegreesToSnapTurnBy,
+    viewControlDeadZone = defaultViewControlDeadZone,
+    smoothTurningSpeed = defaultSmoothTurningSpeed,
+    enableSmoothTurning = defaultEnableSmoothTurning,
+    disableSnapTurning,
+    disableRefMovement,
+    motionCallback
+  } = options;
 
   const positionRef = useRef<Group>(null);
   const canRotate = useRef(true);
