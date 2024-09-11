@@ -1,13 +1,13 @@
 import { Box } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { interactionGroups, Physics, RigidBody } from '@react-three/rapier'
-import { Container, Root } from '@react-three/uikit'
 import { createXRStore, XR } from '@react-three/xr'
 import { Suspense, useState } from 'react'
 import { Vector3 } from 'three'
 import './App.css'
 import { Player } from './Player/Player'
 import { OrbitControlsWrapper } from './components/OrbitControlsWrapper'
+import { UIKitTestButtons } from './components/UIKitTestButtons'
 
 const store = createXRStore()
 
@@ -28,12 +28,12 @@ function App() {
               <Physics debug>
                 <Player />
 
-                <group position={[0, 2, -4]}>
-                  <Root backgroundColor={"#9900ff"} sizeX={2} sizeY={1} flexDirection={'row'}>
-                    <Container onClick={() => setLeftSquareColor((p) => p === "green" ? "red" : "green")} flexGrow={1} margin={8} backgroundColor={leftSquareColor} />
-                    <Container onClick={() => setRightSquareColor((p) => p === "blue" ? "orange" : "blue")} flexGrow={1} margin={8} backgroundColor={rightSquareColor} />
-                  </Root>
-                </group>
+                <UIKitTestButtons
+                  setLeftSquareColor={setLeftSquareColor}
+                  setRightSquareColor={setRightSquareColor}
+                  leftSquareColor={leftSquareColor}
+                  rightSquareColor={rightSquareColor}
+                />
 
                 <RigidBody colliders="cuboid" type='fixed' collisionGroups={interactionGroups([0, 1], [0])}>
                   <Box position={new Vector3(0, 0, 0)} scale={new Vector3(20, .5, 20)}>
