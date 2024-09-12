@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber"
-import { useXRControllerState } from "@react-three/xr"
+import { useXRInputSourceState } from "@react-three/xr"
 import { useRef } from "react"
 import { Group, MathUtils, Quaternion, Vector3 } from "three"
 
@@ -57,8 +57,8 @@ export function useControllerLocomotion(options?: ControllerLocomotionOptions) {
   const positionInfo = useRef<Group>(null)
   const canRotate = useRef(true)
 
-  const l_controller = useXRControllerState("left");
-  const r_controller = useXRControllerState("right");
+  const l_controller = useXRInputSourceState("controller", "left");
+  const r_controller = useXRInputSourceState("controller", "right");
 
   const resolvedMovementController = movementController === 'left' ? l_controller : r_controller
   const viewController = movementController === 'left' ? r_controller : l_controller

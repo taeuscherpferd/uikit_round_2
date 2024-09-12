@@ -68,7 +68,7 @@ export const Player: React.FC<PlayerProps> = (props) => {
       canSleep={false}
       collisionGroups={interactionGroups([0], [0])}
     >
-      <CapsuleCollider args={[.5, .5]} />
+      <CapsuleCollider args={[.3, .5]} />
       <XROrigin ref={positionRef} position={[0, -1.5, 0]} />
     </RigidBody>
   </>

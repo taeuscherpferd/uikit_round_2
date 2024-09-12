@@ -8,6 +8,7 @@ import './App.css'
 import { Player } from './Player/Player'
 import { OrbitControlsWrapper } from './components/OrbitControlsWrapper'
 import { UIKitTestButtons } from './components/UIKitTestButtons'
+import { WaterGun } from './components/WaterGun'
 
 const store = createXRStore()
 
@@ -34,6 +35,7 @@ function App() {
                   leftSquareColor={leftSquareColor}
                   rightSquareColor={rightSquareColor}
                 />
+                <WaterGun position={[2, 2, 0]} scale={.2} />
 
                 <RigidBody colliders="cuboid" type='fixed' collisionGroups={interactionGroups([0, 1], [0])}>
                   <Box position={new Vector3(0, 0, 0)} scale={new Vector3(20, .5, 20)}>
