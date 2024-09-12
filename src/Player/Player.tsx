@@ -3,7 +3,7 @@ import { CapsuleCollider, interactionGroups, RapierRigidBody, RigidBody, useRapi
 import { useXRControllerState, XROrigin } from '@react-three/xr';
 import { useRef } from 'react';
 import { Vector3 } from 'three';
-import { useLocomotion } from '../hooks/useLocomotion';
+import { useControllerLocomotion } from '../hooks/useControllerLocomotion';
 
 interface PlayerProps {
   position?: Vector3
@@ -24,7 +24,7 @@ export const Player: React.FC<PlayerProps> = (props) => {
     }
   }
 
-  const positionRef = useLocomotion({ speed: 3, motionCallback: playerMove, disableRefMovement: true })
+  const positionRef = useControllerLocomotion({ translationOptions: { speed: 3, motionCallback: playerMove, disableRefTranslation: true } })
 
   const playerJump = () => {
     if (playerRigidBodyRef.current == null) {
