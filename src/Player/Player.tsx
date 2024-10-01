@@ -1,30 +1,39 @@
 import { useFrame } from '@react-three/fiber';
 import { CapsuleCollider, interactionGroups, RapierRigidBody, RigidBody, useRapier } from '@react-three/rapier';
-import { useXRControllerState, XROrigin } from '@react-three/xr';
+import { useControllerLocomotion, useXRControllerState, XROrigin } from '@react-three/xr';
 import { useRef } from 'react';
-import { Vector3 } from 'three';
-import { useControllerLocomotion } from '../hooks/useControllerLocomotion';
+import { Euler, Quaternion, Vector3 } from 'three';
 
 interface PlayerProps {
   position?: Vector3
 }
 
-export const Player: React.FC<PlayerProps> = (props) => {
+const eulerHelper = new Euler()
+const quaternionHelper = new Quaternion()
+const quaternionHelper2 = new Quaternion()
+
+export const Player: React.FC<PlayerProps> = () => {
   // const [debugPanelText, setDebugPanelText] = useState<string>('')
   const playerRigidBodyRef = useRef<RapierRigidBody>(null)
   const { rapier, world } = useRapier()
   const controllerRight = useXRControllerState('right')
 
-  const playerMove = (inputVector: Vector3) => {
+  const playerMove = (inputVector: Vector3, rotationY: number) => {
+    if (!playerRigidBodyRef.current) return
     // setDebugPanelText(`Input Vector: ${inputVector.x.toFixed(2)}, ${inputVector.y.toFixed(2)}, ${inputVector.z.toFixed(2)}`)
-    if (playerRigidBodyRef.current) {
-      const currentLinvel = playerRigidBodyRef.current.linvel()
-      const newLinvel = { x: inputVector.x, y: currentLinvel.y, z: inputVector.z }
-      playerRigidBodyRef.current.setLinvel(newLinvel, true)
+    if (rotationY) {
+      const { x, y, z, w } = playerRigidBodyRef.current?.rotation()
+      quaternionHelper.set(x, y, z, w)
+      quaternionHelper.multiply(quaternionHelper2.setFromEuler(eulerHelper.set(0, rotationY, 0)))
+      playerRigidBodyRef.current.setRotation(quaternionHelper, true)
     }
+
+    const currentLinvel = playerRigidBodyRef.current.linvel()
+    const newLinvel = { x: inputVector.x, y: currentLinvel.y, z: inputVector.z }
+    playerRigidBodyRef.current.setLinvel(newLinvel, true)
   }
 
-  const positionRef = useControllerLocomotion({ translationOptions: { speed: 3, motionCallback: playerMove, disableRefTranslation: true } })
+  useControllerLocomotion(playerMove, { speed: 3 })
 
   const playerJump = () => {
     if (playerRigidBodyRef.current == null) {
@@ -69,7 +78,7 @@ export const Player: React.FC<PlayerProps> = (props) => {
       collisionGroups={interactionGroups([0], [0])}
     >
       <CapsuleCollider args={[.3, .5]} />
-      <XROrigin ref={positionRef} position={[0, -1.5, 0]} />
+      <XROrigin position={[0, -1.5, 0]} />
     </RigidBody>
   </>
 }
