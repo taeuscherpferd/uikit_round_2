@@ -26,6 +26,7 @@ export const Player: React.FC<PlayerProps> = () => {
       quaternionHelper.set(x, y, z, w)
       quaternionHelper.multiply(quaternionHelper2.setFromEuler(eulerHelper.set(0, rotationY, 0)))
       playerRigidBodyRef.current.setRotation(quaternionHelper, true)
+      return
     }
 
     const currentLinvel = playerRigidBodyRef.current.linvel()
@@ -78,7 +79,7 @@ export const Player: React.FC<PlayerProps> = () => {
       collisionGroups={interactionGroups([0], [0])}
     >
       <CapsuleCollider args={[.3, .5]} />
-      <XROrigin position={[0, -1.5, 0]} />
+      <XROrigin position={[0, -.7, 0]} />
     </RigidBody>
   </>
 }
