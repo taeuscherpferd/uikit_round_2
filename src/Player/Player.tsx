@@ -1,8 +1,9 @@
 import { useFrame } from '@react-three/fiber';
 import { CapsuleCollider, interactionGroups, RapierRigidBody, RigidBody, useRapier } from '@react-three/rapier';
-import { useControllerLocomotion, useXRControllerState, XROrigin } from '@react-three/xr';
+import { useControllerLocomotion, useXRInputSourceState, XROrigin } from '@react-three/xr';
 import { useRef } from 'react';
 import { Euler, Quaternion, Vector3 } from 'three';
+import { PhysicsGrabHelper } from '../components/frameworkComponents/PhysicsGrabHelper';
 
 interface PlayerProps {
   position?: Vector3
@@ -16,7 +17,7 @@ export const Player: React.FC<PlayerProps> = () => {
   // const [debugPanelText, setDebugPanelText] = useState<string>('')
   const playerRigidBodyRef = useRef<RapierRigidBody>(null)
   const { rapier, world } = useRapier()
-  const controllerRight = useXRControllerState('right')
+  const controllerRight = useXRInputSourceState('controller', 'left')
 
   const playerMove = (inputVector: Vector3, rotationY: number) => {
     if (!playerRigidBodyRef.current) return
@@ -68,6 +69,7 @@ export const Player: React.FC<PlayerProps> = () => {
         </Container>
       </Root>
     </group> */}
+    <PhysicsGrabHelper grabColliderRadius={.12} />
 
     <RigidBody
       ref={playerRigidBodyRef}

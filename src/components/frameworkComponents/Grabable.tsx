@@ -1,8 +1,8 @@
 import { Vector3, useFrame } from '@react-three/fiber'
 import { BallCollider, IntersectionEnterHandler, IntersectionExitHandler, RapierCollider, RapierRigidBody, RigidBody, RigidBodyOptions } from '@react-three/rapier'
-import { useXR } from '@react-three/xr'
+import { useXR, useXRInputSourceState } from '@react-three/xr'
 import { useRef, useState } from 'react'
-import { Euler, Object3D, Quaternion, Event, Vector3 as V3 } from 'three'
+import { Euler, Quaternion, Vector3 as V3 } from 'three'
 
 export interface GrabableProps {
   children?: React.ReactNode
@@ -23,6 +23,7 @@ export const Grabable: React.FC<GrabableProps> = (props) => {
   const [canBeRGrabbed, setCanBeRGrabbed] = useState(false)
   const [isRGrabbed, setIsRGrabbed] = useState(false)
   const [isLGrabbed, setIsLGrabbed] = useState(false)
+  const leftController = useXRInputSourceState("controller", "left")
   const controllers = useXR((x) => x.controllers)
 
   const ballColliderRef = useRef<RapierCollider>(null)

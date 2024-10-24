@@ -1,11 +1,10 @@
-import { Box } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { interactionGroups, Physics, RigidBody } from '@react-three/rapier'
+import { Physics } from '@react-three/rapier'
 import { createXRStore, XR } from '@react-three/xr'
 import { Suspense, useState } from 'react'
-import { Vector3 } from 'three'
 import './App.css'
 import { Player } from './Player/Player'
+import { Floor } from './components/Floor'
 import { OrbitControlsWrapper } from './components/OrbitControlsWrapper'
 import { UIKitTestButtons } from './components/UIKitTestButtons'
 import { WaterGun } from './components/WaterGun'
@@ -37,11 +36,7 @@ function App() {
                 />
                 <WaterGun position={[2, 2, 0]} scale={.2} />
 
-                <RigidBody colliders="cuboid" type='fixed' collisionGroups={interactionGroups([0, 1], [0])}>
-                  <Box position={new Vector3(0, 0, 0)} scale={new Vector3(20, .5, 20)}>
-                    <meshBasicMaterial color={"#9eeb34"} />
-                  </Box>
-                </RigidBody>
+                <Floor />
               </Physics>
             </XR>
           </Suspense>
