@@ -1,6 +1,6 @@
 import { useFrame } from '@react-three/fiber';
 import { CapsuleCollider, interactionGroups, RapierRigidBody, RigidBody, useRapier } from '@react-three/rapier';
-import { useControllerLocomotion, useXRInputSourceState, XROrigin } from '@react-three/xr';
+import { useXRControllerLocomotion, useXRInputSourceState, XROrigin } from '@react-three/xr';
 import { useRef } from 'react';
 import { Euler, Quaternion, Vector3 } from 'three';
 import { PhysicsGrabHelper } from '../components/frameworkComponents/PhysicsGrabHelper';
@@ -17,7 +17,7 @@ export const Player: React.FC<PlayerProps> = () => {
   // const [debugPanelText, setDebugPanelText] = useState<string>('')
   const playerRigidBodyRef = useRef<RapierRigidBody>(null)
   const { rapier, world } = useRapier()
-  const controllerRight = useXRInputSourceState('controller', 'left')
+  const controllerRight = useXRInputSourceState('controller', 'right')
 
   const playerMove = (inputVector: Vector3, rotationY: number) => {
     if (!playerRigidBodyRef.current) return
@@ -35,7 +35,7 @@ export const Player: React.FC<PlayerProps> = () => {
     playerRigidBodyRef.current.setLinvel(newLinvel, true)
   }
 
-  useControllerLocomotion(playerMove, { speed: 3 })
+  useXRControllerLocomotion(playerMove, { speed: 3 })
 
   const playerJump = () => {
     if (playerRigidBodyRef.current == null) {
@@ -51,7 +51,7 @@ export const Player: React.FC<PlayerProps> = () => {
     const grounded = ray != null && Math.abs(ray.timeOfImpact) <= 1.25
 
     if (grounded) {
-      playerRigidBodyRef.current.setLinvel({ x: 0, y: 7.5, z: 0 }, true)
+      playerRigidBodyRef.current.setLinvel({ x: 0, y: 5.5, z: 0 }, true)
     }
   }
 
