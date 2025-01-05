@@ -4,7 +4,6 @@ import { createXRStore, XR } from '@react-three/xr'
 import { Suspense, useState } from 'react'
 import './App.css'
 import { Player } from './Player/Player'
-import { Fire } from './components/Fire'
 import { Floor } from './components/Floor'
 import { OrbitControlsWrapper } from './components/OrbitControlsWrapper'
 import { UIKitTestButtons } from './components/UIKitTestButtons'
@@ -23,21 +22,18 @@ function App() {
           <color attach="background" args={['lightblue']} />
           <Suspense fallback={null}>
             <XR store={store}>
+              {/*TODO: Implement a ControllerInteractionsComponent here that will fire off events for when different controller states are triggered. Then subscribe to those events in an Interactable Component */}
               <OrbitControlsWrapper />
               <ambientLight intensity={.5} />
-              <pointLight position={[0, 2, 0]} />
               <Physics debug>
                 <Player />
-
                 <UIKitTestButtons
                   setLeftSquareColor={setLeftSquareColor}
                   setRightSquareColor={setRightSquareColor}
                   leftSquareColor={leftSquareColor}
                   rightSquareColor={rightSquareColor}
                 />
-                <WaterGun position={[2, 2, 0]} scale={.2} />
-                <Fire />
-
+                <WaterGun position={[0, 2, 0]} scale={.2} />
                 <Floor />
               </Physics>
             </XR>

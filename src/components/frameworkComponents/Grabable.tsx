@@ -1,6 +1,6 @@
 import { Vector3, useFrame } from '@react-three/fiber'
 import { BallCollider, IntersectionEnterHandler, IntersectionExitHandler, RapierCollider, RapierRigidBody, RigidBody, RigidBodyOptions } from '@react-three/rapier'
-import { useXR, useXRInputSourceState } from '@react-three/xr'
+import { useXRInputSourceState } from '@react-three/xr'
 import { useRef, useState } from 'react'
 import { Euler, Quaternion, Vector3 as V3 } from 'three'
 
@@ -17,6 +17,9 @@ export interface GrabableProps {
   oculusGamePadFunctions?: OculusGamePadFunctions
 }
 
+const grabberPositionHelper = new V3()
+const grabberRotationHelper = new Quaternion()
+
 export const Grabable: React.FC<GrabableProps> = (props) => {
   const { children, onGrabEffect, onRelease, snapToLocation, snapToRotation, colliderOptions, position, oculusGamePadFunctions } = props
   const [canBeLGrabbed, setCanBeLGrabbed] = useState(false)
@@ -24,18 +27,18 @@ export const Grabable: React.FC<GrabableProps> = (props) => {
   const [isRGrabbed, setIsRGrabbed] = useState(false)
   const [isLGrabbed, setIsLGrabbed] = useState(false)
   const leftController = useXRInputSourceState("controller", "left")
-  const controllers = useXR((x) => x.controllers)
+  const rightController = useXRInputSourceState("controller", "right")
 
   const ballColliderRef = useRef<RapierCollider>(null)
   const thisObject = useRef<RapierRigidBody>(null)
 
-  let squeezeFunctions: OculusGamePadFunctions | undefined
-  let gamePadFunctionsOverride: OculusGamePadFunctions | undefined
-  if (oculusGamePadFunctions && (isRGrabbed || isLGrabbed)) {
-    const { i_OnLSqueezeDown, i_OnLSqueezeUp, i_OnRSqueezeDown, i_OnRSqueezeUp, ...everythingElse } = oculusGamePadFunctions
-    squeezeFunctions = { i_OnLSqueezeDown, i_OnLSqueezeUp, i_OnRSqueezeDown, i_OnRSqueezeUp }
-    gamePadFunctionsOverride = everythingElse
-  }
+  // let squeezeFunctions: OculusGamePadFunctions | undefined
+  // let gamePadFunctionsOverride: OculusGamePadFunctions | undefined
+  // if (oculusGamePadFunctions && (isRGrabbed || isLGrabbed)) {
+  //   const { i_OnLSqueezeDown, i_OnLSqueezeUp, i_OnRSqueezeDown, i_OnRSqueezeUp, ...everythingElse } = oculusGamePadFunctions
+  //   squeezeFunctions = { i_OnLSqueezeDown, i_OnLSqueezeUp, i_OnRSqueezeDown, i_OnRSqueezeUp }
+  //   gamePadFunctionsOverride = everythingElse
+  // }
 
   const onGrab = (isRight: boolean) => {
     onGrabEffect && onGrabEffect()
@@ -51,15 +54,26 @@ export const Grabable: React.FC<GrabableProps> = (props) => {
   }
 
   useFrame(() => {
+    // Update the position of the object to the position of the grabber
     if (!isRGrabbed && !isLGrabbed) return
-    const grabberPosition = isRGrabbed ? controllers.at(1)?.grip?.getWorldPosition(new V3()) : controllers.at(0)?.grip?.getWorldPosition(new V3())
-    const grabberRotation = isRGrabbed ? controllers.at(1)?.grip?.getWorldQuaternion(new Quaternion()) : controllers.at(0)?.grip?.getWorldQuaternion(new Quaternion())
+    const grabberPosition = isRGrabbed ? rightController?.object?.getWorldPosition(grabberPositionHelper) : leftController?.object?.getWorldPosition(grabberPositionHelper)
+    const grabberRotation = isRGrabbed ? rightController?.object?.getWorldQuaternion(grabberRotationHelper) : leftController?.object?.getWorldQuaternion(grabberRotationHelper)
+
     if (!grabberPosition) return
     if (!grabberRotation) return
+
     const combinedRotation = snapToRotation ? grabberRotation.multiply(new Quaternion().setFromEuler(snapToRotation)) : grabberRotation
 
     thisObject.current?.setNextKinematicTranslation(grabberPosition)
     thisObject.current?.setNextKinematicRotation(combinedRotation)
+
+    // Check for grab events
+    if (canBeRGrabbed) {
+
+    }
+    if (canBeLGrabbed) {
+
+    }
   })
 
   useOculusGamePad({
