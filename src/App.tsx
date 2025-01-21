@@ -1,7 +1,10 @@
+import { HandleStore } from '@pmndrs/handle'
 import { Canvas } from '@react-three/fiber'
-import { Physics } from '@react-three/rapier'
+import { Handle, HandleOptions } from '@react-three/handle'
+import { Physics, RigidBody } from '@react-three/rapier'
 import { createXRStore, XR } from '@react-three/xr'
-import { Suspense, useState } from 'react'
+import { Suspense, useRef, useState } from 'react'
+import { Object3D } from 'three'
 import './App.css'
 import { Player } from './Player/Player'
 import { Floor } from './components/Floor'
@@ -14,6 +17,14 @@ const store = createXRStore()
 function App() {
   const [leftSquareColor, setLeftSquareColor] = useState('green')
   const [rightSquareColor, setRightSquareColor] = useState('blue')
+
+  const handleRef = useRef<HandleStore<unknown>>(null)
+  const getHandleOptions = () => {
+    const handleOptions: HandleOptions<Object3D> = {
+    }
+    return handleOptions
+  }
+
   return (
     <>
       <div className='nonVrStuff'>
@@ -33,13 +44,18 @@ function App() {
                   leftSquareColor={leftSquareColor}
                   rightSquareColor={rightSquareColor}
                 />
-                <WaterGun position={[0, 2, 0]} scale={.2} />
+
+                <Handle ref={handleRef}>
+                  <RigidBody>
+                    <WaterGun position={[0, 2, 0]} scale={.1} />
+                  </RigidBody>
+                </Handle>
                 <Floor />
               </Physics>
             </XR>
           </Suspense>
         </Canvas>
-      </div >
+      </div>
     </>
   )
 }

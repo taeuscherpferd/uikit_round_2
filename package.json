@@ -11,8 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@pmndrs/handle": "^6.4.12-alpha.31",
     "@react-three/drei": "^9.114.0",
     "@react-three/fiber": "^8.17.9",
+    "@react-three/handle": "^6.4.12-alpha.31",
     "@react-three/rapier": "^1.4.0",
     "@react-three/uikit": "^0.6.0",
     "@react-three/xr": "^6.4.12",
@@ -22,8 +24,8 @@
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
-    "@types/three": "^0.169.0",
     "@types/react-dom": "^18.2.22",
+    "@types/three": "^0.169.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
