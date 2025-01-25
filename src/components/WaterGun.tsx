@@ -1,13 +1,13 @@
 import { useGLTF } from "@react-three/drei";
 import { Vector3, useThree } from "@react-three/fiber";
 import { useXRInputSourceState } from "@react-three/xr";
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import * as THREE from 'three';
 import waterGunGlb from "./../assets/Models/WaterGun.glb";
 // import { Grabable, GrabableProps } from "../WebVrGameDevFramework/Grabable/Grabable";
 
 interface WaterGunProps {
-  position: Vector3
+  position?: Vector3
   rotation?: THREE.Euler
   scale?: Vector3
   // grabableProps?: GrabableProps
@@ -24,9 +24,9 @@ type GLTFResult = {
 
 const snapToRotation: THREE.Euler = new THREE.Euler(Math.PI + Math.PI / 8, Math.PI * 2, Math.PI * 1.5)
 
-export const WaterGun: React.FC<WaterGunProps> = (WaterGunProps) => {
-  const { scene } = useThree()
+export const WaterGun = forwardRef<THREE.Mesh, WaterGunProps>((WaterGunProps, ref) => {
   const { position, rotation, scale } = WaterGunProps
+  const { scene } = useThree()
   const [spheres, setSpheres] = useState<JSX.Element[]>([]);
   const leftController = useXRInputSourceState("controller", "left")
   console.log(leftController?.gamepad)
@@ -54,6 +54,7 @@ export const WaterGun: React.FC<WaterGunProps> = (WaterGunProps) => {
     // <Grabable colliderOptions={{ colliders: 'cuboid' }} position={WaterGunProps.position} snapToRotation={snapToRotation} oculusGamePadFunctions={grabFunctions}>
     <group scale={scale} rotation={rotation} position={position} dispose={null}>
       <mesh
+        ref={ref}
         castShadow
         receiveShadow
         geometry={(nodes.Cube as any).geometry}
@@ -62,6 +63,6 @@ export const WaterGun: React.FC<WaterGunProps> = (WaterGunProps) => {
     </group>
     // </Grabable >
   );
-}
+})
 
 useGLTF.preload("/WaterGun.gltf");
