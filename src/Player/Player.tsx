@@ -42,13 +42,13 @@ export const Player: React.FC<PlayerProps> = () => {
       return
     }
     const ray = world.castRay(
-      new rapier.Ray(playerRigidBodyRef.current.translation(), { x: 0, y: -1, z: 0 }),
+      new rapier.Ray(playerRigidBodyRef.current.translation(), { x: 0, y: -.65, z: 0 }),
       Infinity,
       false,
       undefined,
       interactionGroups([1, 0], [1]),
     )
-    const grounded = ray != null && Math.abs(ray.timeOfImpact) <= 1.25
+    const grounded = ray != null && Math.abs(ray.timeOfImpact) <= 1.24
 
     if (grounded) {
       playerRigidBodyRef.current.setLinvel({ x: 0, y: 5.5, z: 0 }, true)
@@ -78,7 +78,7 @@ export const Player: React.FC<PlayerProps> = () => {
       position={[0, 2, 0]}
       enabledRotations={[false, false, false]}
       canSleep={false}
-      collisionGroups={interactionGroups([0], [0])}
+      collisionGroups={interactionGroups([1], [0,2])}
     >
       <CapsuleCollider args={[.3, .5]} />
       <XROrigin position={[0, -.7, 0]} />

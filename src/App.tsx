@@ -1,28 +1,27 @@
+import { Box } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { Physics } from '@react-three/rapier'
 import { createXRStore, XR } from '@react-three/xr'
-import { Suspense, useRef, useState } from 'react'
-import { Mesh } from 'three'
+import { Suspense, useState } from 'react'
 import './App.css'
 import { Player } from './Player/Player'
 import { Floor } from './components/Floor'
-import { HandleWithPhysicsAndTriggers } from './components/HandleWithPhysicsAndTriggers'
 import { OrbitControlsWrapper } from './components/OrbitControlsWrapper'
+import { PhysicsHandleWithTriggers } from './components/PhysicsHandleWithTriggers'
 import { UIKitTestButtons } from './components/UIKitTestButtons'
 import { WaterGun } from './components/WaterGun'
 
-const store = createXRStore()
+let store = createXRStore()
 
 function App() {
   const [leftSquareColor, setLeftSquareColor] = useState('green')
   const [rightSquareColor, setRightSquareColor] = useState('blue')
 
-  const WaterGunRef = useRef<Mesh>(null)
-
   return (
     <>
       <div className='nonVrStuff'>
         <button onClick={() => { store.enterVR() }}>{"Enter VR"}</button>
+
         <Canvas>
           <color attach="background" args={['lightblue']} />
           <Suspense fallback={null}>
@@ -38,10 +37,14 @@ function App() {
                   leftSquareColor={leftSquareColor}
                   rightSquareColor={rightSquareColor}
                 />
-
-                <HandleWithPhysicsAndTriggers position={[0, 2, 0]} childRef={WaterGunRef}>
-                  <WaterGun ref={WaterGunRef} scale={.1} />
-                </HandleWithPhysicsAndTriggers>
+                <PhysicsHandleWithTriggers position={[-2, 5, 0]}>
+                  <WaterGun scale={.1} />
+                </PhysicsHandleWithTriggers>
+                <PhysicsHandleWithTriggers position={[2, 5, 0]}>
+                  <Box>
+                    <meshBasicMaterial color={leftSquareColor} />
+                  </Box>
+                </PhysicsHandleWithTriggers>
                 <Floor />
               </Physics>
             </XR>

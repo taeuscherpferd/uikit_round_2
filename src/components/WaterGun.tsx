@@ -1,7 +1,6 @@
 import { useGLTF } from "@react-three/drei";
-import { Vector3, useThree } from "@react-three/fiber";
-import { useXRInputSourceState } from "@react-three/xr";
-import { forwardRef, useState } from "react";
+import { Vector3 } from "@react-three/fiber";
+import { forwardRef } from "react";
 import * as THREE from 'three';
 import waterGunGlb from "./../assets/Models/WaterGun.glb";
 // import { Grabable, GrabableProps } from "../WebVrGameDevFramework/Grabable/Grabable";
@@ -22,32 +21,31 @@ type GLTFResult = {
   }
 }
 
-const snapToRotation: THREE.Euler = new THREE.Euler(Math.PI + Math.PI / 8, Math.PI * 2, Math.PI * 1.5)
+// const snapToRotation: THREE.Euler = new THREE.Euler(Math.PI + Math.PI / 8, Math.PI * 2, Math.PI * 1.5)
 
 export const WaterGun = forwardRef<THREE.Mesh, WaterGunProps>((WaterGunProps, ref) => {
   const { position, rotation, scale } = WaterGunProps
-  const { scene } = useThree()
-  const [spheres, setSpheres] = useState<JSX.Element[]>([]);
-  const leftController = useXRInputSourceState("controller", "left")
-  console.log(leftController?.gamepad)
+  // const { scene } = useThree()
+  // const [spheres, setSpheres] = useState<JSX.Element[]>([]);
+  // const leftController = useXRInputSourceState("controller", "left")
 
   const { nodes, materials } = useGLTF(waterGunGlb) as unknown as GLTFResult;
 
-  const spawnSphere = () => {
+  // const spawnSphere = () => {
     // const bullet = new Bullet(new OgVector3(0, 2, 0), new OgVector3(0, 0, 0))
     // scene.add(bullet.mesh)
-  };
+  // };
 
   /* TODO: Make Grabable components respect left and right grabs when calling trigger functions */
-  const grabFunctions = {
-    i_OnLTriggerDown: () => {
-      console.log("LTriggerDown")
-    },
-    i_OnRTriggerDown: () => {
-      console.log("RTriggerDown")
-      spawnSphere();
-    },
-  }
+  // const grabFunctions = {
+  //   i_OnLTriggerDown: () => {
+  //     console.log("LTriggerDown")
+  //   },
+  //   i_OnRTriggerDown: () => {
+  //     console.log("RTriggerDown")
+  //     spawnSphere();
+  //   },
+  // }
 
   return (
     // TODO: Reimplement Grabable component but do it better this time
